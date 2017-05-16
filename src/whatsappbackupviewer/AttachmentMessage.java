@@ -20,8 +20,8 @@ public class AttachmentMessage extends Message {
         Matcher matcher = PATTERN.matcher(line);   
         if (matcher.find()) {
             this.timestamp = parse_date(matcher.group(1));
-            this.actor = matcher.group(3);
-            this.path = matcher.group(4);
+            this.actor = matcher.group(2);
+            this.path = matcher.group(3);
         } else {
             throw new Exception("Failed to parse attachmentmessage");
         }

@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * @author timfi
  */
 public abstract class Message {
-    private Pattern date_pattern = Pattern.compile("^(\\d{2})\\.(\\d{2})\\.(\\d{2})\\, (\\d{1,2})\\:(\\d{2})\\:(\\d{2}) (AM|PM)%s");
+    private Pattern date_pattern = Pattern.compile("(\\d{2})\\.(\\d{2})\\.(\\d{2})\\, (\\d{1,2})\\:(\\d{2})\\:(\\d{2}) (AM|PM)$");
     protected String actor;
     protected long timestamp;
     
@@ -43,7 +43,7 @@ public abstract class Message {
             s = matcher.group(6);
         // else trow an exception so everyone knows some one fucked with the timestamps
         } else {
-            throw new Exception("Illegal timestamp format.");
+            throw new Exception("Illegal timestamp format: " + S);
         }
         // formats the values to something Instant.parse can read (YYYY-MM-DDThh:mm:ssZ)
         String temp_timestamp = "20" + Y + "-" + M + "-" + D + "T" + (h.length() < 2 ? "0" + h : h) + ":" + m + ":" + s + "Z";

@@ -13,15 +13,15 @@ import java.util.regex.Pattern;
  * @author timfi
  */
 public class TextMessage extends Message {
-    public static final Pattern PATTERN = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{2}, \\d{1,2}:\\d{2}:\\d{2} (?:AM|PM)): (.+): (.+)");
+    public static final Pattern PATTERN = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{2}, \\d{1,2}:\\d{2}:\\d{2} (?:AM|PM)): (.+): ((?:.|\\n)+)");
     private final String message;
     
     public TextMessage(String line) throws Exception {
         Matcher matcher = PATTERN.matcher(line);   
         if (matcher.find()) {
             this.timestamp = parse_date(matcher.group(1));
-            this.actor = matcher.group(3);
-            this.message = matcher.group(4);
+            this.actor = matcher.group(2);
+            this.message = matcher.group(3);
         } else {
             throw new Exception("Failed to parse textmessage");
         }

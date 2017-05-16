@@ -13,15 +13,15 @@ import java.util.regex.Pattern;
  * @author timfi
  */
 public class ServerMessage extends Message {
-    public static final Pattern PATTERN = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{2}, \\d{1,2}:\\d{2}:\\d{2} (AM|PM)): (.+) ((added|joined|left).*)");
+    public static final Pattern PATTERN = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{2}, \\d{1,2}:\\d{2}:\\d{2} (AM|PM)): (.+)(( now an admin| changed| created| added| joined| left|'s).*)");
     public String action;
     
     public ServerMessage(String line) throws Exception {
         Matcher matcher = PATTERN.matcher(line);   
         if (matcher.find()) {
             this.timestamp = parse_date(matcher.group(1));
-            this.actor = matcher.group(3);
-            this.action = matcher.group(4);
+            this.actor = matcher.group(2);
+            this.action = matcher.group(3);
         } else {
             throw new Exception("Failed to parse servermessage");
         }

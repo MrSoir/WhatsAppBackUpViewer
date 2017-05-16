@@ -50,9 +50,9 @@ public class WhatsAppBackUpViewer extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         //launch(args);
-        
+        System.out.println(get_data("G:\\files\\Downloads\\_chat.txt"));
     }
     
     /**
@@ -61,18 +61,28 @@ public class WhatsAppBackUpViewer extends Application {
      * @return a list of message objects
      * @throws FileNotFoundException 
      */    
-    public List<Message> get_data(String logpath) throws FileNotFoundException {
+    public static List<Message> get_data(String logpath) throws FileNotFoundException {
         // temporary list to hold the processed message objects
         List<Message> temp = new ArrayList<>();
         
         // try-with-resource to easily handle the opening and closing of buff
         try(BufferedReader buff = new BufferedReader(new FileReader(logpath))) {
             // temporary string to hold the current line
-            String line = null;
-            // cycle through the lines until the last one is processed
-            while ((line = buff.readLine()) != null) {
-                // add processed line to list
-                temp.add(process_data(line));
+            int c = 0;
+            StringBuilder sb = new StringBuilder();
+            // cycle through the characters until the last one is processed
+            while ((c = buff.read()) >= 0) {
+                // check if current character is lineending (carrige return "CR")
+                if (c == 0x0D) {          
+                    // add processed line to list
+                    temp.add(process_data(sb.toString())); 
+                    // clear string builder
+                    sb.delete(0, sb.length());
+                    // skip the next character (is going to be (line feed "LF")
+                    c = buff.read();
+                } else {
+                    sb.append((char)c);
+                }                    
             }
         } catch (IOException e) {
             System.out.println(e.toString());
@@ -86,7 +96,7 @@ public class WhatsAppBackUpViewer extends Application {
      * @param line the line to be processed
      * @return a "finished" message object
      */
-    public Message process_data(String line) {
+    public static Message process_data(String line) {
         try {
             if (Message.isServerevent(line)) {
                 return new ServerMessage(line);                
@@ -95,7 +105,7 @@ public class WhatsAppBackUpViewer extends Application {
             } else if (Message.isText(line)) {
                 return new TextMessage(line);
             } else {
-                throw new Exception("Message [" + line + "]" + "doesn't conform to known patterns");
+                throw new Exception("Message [" + line + "] doesn't conform to known patterns.");
             }           
         } catch (Exception e) {
             System.out.println(e.toString());
