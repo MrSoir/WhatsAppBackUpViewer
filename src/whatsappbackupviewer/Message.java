@@ -38,7 +38,7 @@ public abstract class Message {
         } else {
             throw new Exception("Illegal timestamp format.");
         }
-        // Formatiert die werte zu einem von Instant.parse lesbaren string (YYYY-MM-DDThh:mm:ssZ)
+        // formats the values to something Instant.parse can read (YYYY-MM-DDThh:mm:ssZ)
         String temp_timestamp = "20" + Y + "-" + M + "-" + D + "T" + (h.length() < 2 ? "0" + h : h) + ":" + m + ":" + s + "Z";
         
         return Instant.parse(temp_timestamp).toEpochMilli();
