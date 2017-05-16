@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * @author timfi
  */
 public abstract class Message {
-    private Pattern date_pattern = Pattern.compile("(\\d{2})\\.(\\d{2})\\.(\\d{2})\\, (\\d{1,2})\\:(\\d{2})\\:(\\d{2}) (AM|PM)$");
+    private Pattern date_pattern = Pattern.compile("^(\\d{2})\\.(\\d{2})\\.(\\d{2})\\, (\\d{1,2})\\:(\\d{2})\\:(\\d{2}) (AM|PM)");
     protected String actor;
     protected long timestamp;
     
@@ -34,9 +34,9 @@ public abstract class Message {
         String Y, M, D ,h, m, s;
         // if the matcher found the results extract the data
         if (matcher.find()) {
-            Y = matcher.group(1);
+            Y = matcher.group(3);
             M = matcher.group(2);
-            D = matcher.group(3);
+            D = matcher.group(1);
             // converts from 12 to 24 hour format and adjusts for the timezone differnce to UTC
             h = ("PM".equals(matcher.group(7)) ? Integer.toString(Integer.parseInt(matcher.group(4)) + 11) :Integer.toString(Integer.parseInt(matcher.group(4)) -1 ));
             m = matcher.group(5);

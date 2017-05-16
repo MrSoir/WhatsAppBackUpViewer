@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
  * @author timfi
  */
 public class ServerMessage extends Message {
-    public static final Pattern PATTERN = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{2}, \\d{1,2}:\\d{2}:\\d{2} (AM|PM)): (.+)(( now an admin| changed| created| added| joined| left|'s).*)");
-    public String action;
+    public static final Pattern PATTERN = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{2}, \\d{1,2}:\\d{2}:\\d{2} (?:AM|PM)): (.+)(( now an admin| changed| created| added| joined| left|'s).*)");
+    private String action;
     
     public ServerMessage(String line) throws Exception {
         Matcher matcher = PATTERN.matcher(line);   

@@ -48,7 +48,10 @@ public class WhatsAppBackUpViewer extends Application {
      */
     public static void main(String[] args) throws FileNotFoundException {
         //launch(args);
-        System.out.println(get_data("G:\\files\\Downloads\\_chat.txt"));
+        List<Message> ml = get_data("G:\\files\\Downloads\\_chat.txt");
+        ServerMessage sm = (ServerMessage) ml.get(0);
+        System.out.println(sm.get_action());
+        System.out.println(sm.get_timestamp());
     }
     
     /**
