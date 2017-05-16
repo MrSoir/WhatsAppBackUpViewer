@@ -30,7 +30,7 @@ public abstract class Message {
             Y = matcher.group(1);
             M = matcher.group(2);
             D = matcher.group(3);
-            // sorgt dafür, dass die Stunden mit dem AM/PM Bullshit noch stimmen und gleichzeitig dafür, dass die Zeitzone auf UTC gewechselt wird
+            // converts from 12 to 24 hour format and adjusts for the timezone differnce to UTC
             h = ("PM".equals(matcher.group(7)) ? Integer.toString(Integer.parseInt(matcher.group(4)) + 11) :Integer.toString(Integer.parseInt(matcher.group(4)) -1 ));
             m = matcher.group(5);
             s = matcher.group(6);
