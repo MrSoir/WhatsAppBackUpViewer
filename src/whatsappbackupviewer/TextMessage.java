@@ -18,14 +18,11 @@ import java.util.Locale;
 public class TextMessage extends Message {
     private String message;
     
-    public TextMessage(String a, String t, String m) {
-        try {
-            this.actor = a;
-            
-            this.message = m;
-        } catch (ParseException e) {
-            System.out.println(e.toString());
-        }
+    public TextMessage(String a, String t, String m) throws Exception {
+        this.actor = a;
+        this.timestamp = parse_date(t);
+        this.message = m;
     }
+        
     public String get_message() { return this.message; }
 }
