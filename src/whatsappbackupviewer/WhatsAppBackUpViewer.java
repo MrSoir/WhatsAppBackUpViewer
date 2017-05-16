@@ -74,7 +74,7 @@ public class WhatsAppBackUpViewer extends Application {
                     temp.add(process_data(sb.toString())); 
                     // clear string builder
                     sb.delete(0, sb.length());
-                    // skip the next character (is going to be (line feed "LF")
+                    // skip the next character (is going to be (line feed "LF"))
                     buff.read();
                 } else {
                     sb.append((char)c);
