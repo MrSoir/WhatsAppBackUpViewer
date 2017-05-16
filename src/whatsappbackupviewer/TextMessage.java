@@ -5,23 +5,26 @@
  */
 package whatsappbackupviewer;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- *
+ * Class for textmessages
  * @author timfi
  */
-// "^\d{2}\.\d{2}\.\d{2}\, \d{1,2}\:\\d{1,2}\\:\d{2} (AM|PM)%s"
 public class TextMessage extends Message {
-    private String message;
+    public static final Pattern PATTERN = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{2}, \\d{1,2}:\\d{2}:\\d{2} (?:AM|PM)): (.+): (.+)");
+    private final String message;
     
-    public TextMessage(String a, String t, String m) throws Exception {
-        this.actor = a;
-        this.timestamp = parse_date(t);
-        this.message = m;
+    public TextMessage(String line) throws Exception {
+        Matcher matcher = PATTERN.matcher(line);   
+        if (matcher.find()) {
+            this.timestamp = parse_date(matcher.group(1));
+            this.actor = matcher.group(3);
+            this.message = matcher.group(4);
+        } else {
+            throw new Exception("Failed to parse textmessage");
+        }
     }
         
     public String get_message() { return this.message; }

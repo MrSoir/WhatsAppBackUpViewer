@@ -67,13 +67,11 @@ public class WhatsAppBackUpViewer extends Application {
         // try-with-resource to easily handle the opening and closing of buff
         try(BufferedReader buff = new BufferedReader(new FileReader(logpath))) {
             // temporary string to hold the current line
-            String line = buff.readLine();
+            String line = null;
             // cycle through the lines until the last one is processed
-            while (line != null) {
+            while ((line = buff.readLine()) != null) {
                 // add processed line to list
                 temp.add(process_data(line));
-                // read in next line
-                line = buff.readLine();
             }
         } catch (IOException e) {
             System.out.println(e.toString());
@@ -88,7 +86,19 @@ public class WhatsAppBackUpViewer extends Application {
      * @return a "finished" message object
      */
     public Message process_data(String line) {
-        
-        return new Message();
+        try {
+            if (Message.isServerevent(line)) {
+                return new ServerMessage(line);                
+            } else if (Message.isAttachment(line)) {
+                return new AttachmentMessage(line);
+            } else if (Message.isText(line)) {
+                return new TextMessage(line);
+            } else {
+                throw new Exception("Message [" + line + "]" + "doesn't conform to known patterns");
+            }           
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return null;
     }
 }

@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Baseclass for Messages
  * @author timfi
  */
 public abstract class Message {
@@ -21,6 +21,13 @@ public abstract class Message {
     public String get_actor() { return this.actor; }
     public long get_timestamp() { return this.timestamp; }
     
+    /**
+     * Convert a timestamp from string form to milliseconds since Epoch
+     * 
+     * @param S given timestamp in string form
+     * @return the milliseconds since Epoch
+     * @throws Exception if the given string doesn't match the known pattern
+     */
     protected long parse_date(String S) throws Exception {
         Matcher matcher = date_pattern.matcher(S);
         // temporary variables to store the results
@@ -42,5 +49,38 @@ public abstract class Message {
         String temp_timestamp = "20" + Y + "-" + M + "-" + D + "T" + (h.length() < 2 ? "0" + h : h) + ":" + m + ":" + s + "Z";
         
         return Instant.parse(temp_timestamp).toEpochMilli();
+    }
+    
+    /**
+     * Checks if the given line matches the standard pattern for textmessages 
+     * 
+     * @param line line to check
+     * @return 
+     */
+    public static boolean isText(String line) {
+        Matcher matcher = TextMessage.PATTERN.matcher(line);        
+        return matcher.matches() & !isAttachment(line);
+    }
+    
+    /**
+     * Checks if the given line matches the standard pattern for servermessages 
+     * 
+     * @param line line to check
+     * @return 
+     */    
+    public static boolean isServerevent(String line) {
+        Matcher matcher = ServerMessage.PATTERN.matcher(line);
+        return matcher.matches();
+    }
+    
+    /**
+     * Checks if the given line matches the standard pattern for attachmentmessages 
+     * 
+     * @param line line to check
+     * @return 
+     */
+    public static boolean isAttachment(String line) {
+        Matcher matcher = AttachmentMessage.PATTERN.matcher(line);
+        return matcher.matches();
     }
 }
