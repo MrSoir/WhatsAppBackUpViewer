@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -29,12 +28,8 @@ public class WhatsAppBackUpViewer extends Application {
     public void start(Stage primaryStage) {
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
+        btn.setOnAction((ActionEvent event) -> {
+            System.out.println("Hello World!");
         });
         
         StackPane root = new StackPane();
@@ -49,6 +44,7 @@ public class WhatsAppBackUpViewer extends Application {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException {
         //launch(args);
@@ -68,7 +64,7 @@ public class WhatsAppBackUpViewer extends Application {
         // try-with-resource to easily handle the opening and closing of buff
         try(BufferedReader buff = new BufferedReader(new FileReader(logpath))) {
             // temporary string to hold the current line
-            int c = 0;
+            int c;
             StringBuilder sb = new StringBuilder();
             // cycle through the characters until the last one is processed
             while ((c = buff.read()) >= 0) {
@@ -79,7 +75,7 @@ public class WhatsAppBackUpViewer extends Application {
                     // clear string builder
                     sb.delete(0, sb.length());
                     // skip the next character (is going to be (line feed "LF")
-                    c = buff.read();
+                    buff.read();
                 } else {
                     sb.append((char)c);
                 }                    
