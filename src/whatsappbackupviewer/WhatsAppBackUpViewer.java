@@ -89,6 +89,6 @@ public class WhatsAppBackUpViewer extends Application {
      */
     public Message process_data(String line) {
         
-        return new Message(null,null,null,null);
+        return new Message();
     }
 }

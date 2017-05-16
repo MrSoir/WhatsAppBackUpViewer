@@ -5,36 +5,31 @@
  */
 package whatsappbackupviewer;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author timfi
  */
-public class Message {
-    private String sender;
-    private Date timestamp;
-    private String message;
-    private Attachment attachment;
-    private DateFormat format;
+public abstract class Message {
+    private Pattern date_pattern = Pattern.compile("^(\\d{2})\\.(\\d{2})\\.(\\d{2})\\, (\\d{1,2})\\:(\\d{2})\\:(\\d{2}) (AM|PM)%s");
+    protected String actor;
+    protected long timestamp;
     
-    public Message(String s, String t, String m, String a) {
-        try {
-            this.format = new SimpleDateFormat("dd.MM.yy, hh.mm.ss aa", Locale.ENGLISH);
-            this.sender = s;
-            this.timestamp = format.parse(t);
-            this.message = m;
-            this.attachment = (a != null) ? new Attachment(a) : null;
-        } catch (Exception e) {
-            System.out.println(e.toString());
+    public String get_actor() { return this.actor; }
+    public long get_timestamp() { return this.timestamp; }
+    
+    protected long parse_date(String S) {
+        Matcher matcher = date_pattern.matcher(S);
+        int Y, M, D ,h, m, s;
+        if (matcher.find()) {
+            Y = Integer.parseInt(matcher.group(1));
+            M = Integer.parseInt(matcher.group(2));
+            D = Integer.parseInt(matcher.group(3));
+            h = Integer.parseInt(matcher.group(4));
+            m = Integer.parseInt(matcher.group(5));
+            s = Integer.parseInt(matcher.group(6));
         }
     }
-    
-    public String get_sender() { return this.sender; }
-    public Date get_timestamp() { return this.timestamp; }
-    public String get_message() { return this.message; }
-    public Attachment get_attachment() { return this.attachment; }
 }
