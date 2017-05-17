@@ -23,9 +23,17 @@ public class AttachmentMessage extends Message {
             this.actor = matcher.group(2);
             this.path = matcher.group(3);
         } else {
-            throw new Exception("Failed to parse attachmentmessage");
+            throw new 	@Override
+	public String toString(){
+		return String.format("TextMessage:%n	date: %s%n	attachment: %s%n", timestamp, attachment);
+	}Exception("Failed to parse attachmentmessage");
         }
     }
     
     public String get_path() { return this.path; }
+    
+    @Override
+	public String toString(){
+		return String.format("AttachmentMessage:%n	date: %s%n	attachment: %s%n", timestamp, path);
+	}
 }
