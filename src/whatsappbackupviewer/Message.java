@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  */
 public abstract class Message {
     private Pattern date_pattern = Pattern.compile("^(\\d{2})\\.(\\d{2})\\.(\\d{2})\\, (\\d{1,2})\\:(\\d{2})\\:(\\d{2}) (AM|PM)");
+    private int timezone_offset = -1;
     protected String actor;
     protected long timestamp;
     
@@ -38,7 +39,9 @@ public abstract class Message {
             M = matcher.group(2);
             D = matcher.group(1);
             // converts from 12 to 24 hour format and adjusts for the timezone differnce to UTC
-            h = ("PM".equals(matcher.group(7)) ? Integer.toString(Integer.parseInt(matcher.group(4)) + 11) :Integer.toString(Integer.parseInt(matcher.group(4)) -1 ));
+            h = ("PM".equals(matcher.group(7)) ? 
+                    Integer.toString(Integer.parseInt(matcher.group(4)) + 12 + timezone_offset) :
+                    Integer.toString(Integer.parseInt(matcher.group(4)) +  - timezone_offset ));
             m = matcher.group(5);
             s = matcher.group(6);
         // else trow an exception so everyone knows some one fucked with the timestamps

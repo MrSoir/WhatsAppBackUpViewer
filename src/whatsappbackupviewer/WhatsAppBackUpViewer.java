@@ -9,7 +9,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -48,10 +51,18 @@ public class WhatsAppBackUpViewer extends Application {
      */
     public static void main(String[] args) throws FileNotFoundException {
         //launch(args);
-        List<Message> ml = get_data("G:\\files\\Downloads\\_chat.txt");
-        ServerMessage sm = (ServerMessage) ml.get(0);
-        System.out.println(sm.get_action());
-        System.out.println(sm.get_timestamp());
+        List<Message> ml = get_data("G:\\files\\Downloads\\WhatsApp Chat - Informatik SS 2017 (15.05.17)\\_chat.txt");
+        System.out.println(ml);
+        for (int i = 0; i < 11; i++) {
+            if (ml.get(i) != null) {
+                System.out.println(ml.get(i));
+                System.out.println(ml.get(i).get_timestamp());
+                Date date = new Date(ml.get(i).get_timestamp());
+                SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+                String dateStr = df2.format(date);
+                System.out.println(dateStr);  
+            }                
+        }
     }
     
     /**
@@ -62,7 +73,7 @@ public class WhatsAppBackUpViewer extends Application {
      */    
     public static List<Message> get_data(String logpath) throws FileNotFoundException {
         // temporary list to hold the processed message objects
-        List<Message> temp = new ArrayList<>();
+        List<Message> temp = new LinkedList<>();
         
         // try-with-resource to easily handle the opening and closing of buff
         try(BufferedReader buff = new BufferedReader(new FileReader(logpath))) {
@@ -97,11 +108,16 @@ public class WhatsAppBackUpViewer extends Application {
      */
     public static Message process_data(String line) {
         try {
+            // if the message fits the server message regex make servermessageOBJ
             if (Message.isServerevent(line)) {
                 return new ServerMessage(line);                
-            } else if (Message.isAttachment(line)) {
+            }
+            // if the message fits the attachment message regex make attachmentmessageOBJ
+            else if (Message.isAttachment(line)) {
                 return new AttachmentMessage(line);
-            } else if (Message.isText(line)) {
+            } 
+            // if the message fits the text message regex make textmessageOBJ
+            else if (Message.isText(line)) {
                 return new TextMessage(line);
             } else {
                 throw new Exception("Message [" + line + "] doesn't conform to known patterns.");
