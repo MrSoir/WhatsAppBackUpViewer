@@ -21,11 +21,9 @@ public class ServerMessage extends Message {
         if (matcher.find()) {
             this.timestamp = parse_date(matcher.group(1));
             this.actor = matcher.group(2);
-            this.action = matcher.group(3);
+            this.content = matcher.group(3);
         } else {
             throw new Exception("Failed to parse servermessage");
         }
     }
-    
-    public String get_action() { return this.action; }
 }

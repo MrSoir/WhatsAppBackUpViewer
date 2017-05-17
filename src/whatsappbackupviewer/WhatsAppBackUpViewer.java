@@ -57,6 +57,7 @@ public class WhatsAppBackUpViewer extends Application {
             if (ml.get(i) != null) {
                 System.out.println(ml.get(i));
                 System.out.println(ml.get(i).get_timestamp());
+                System.out.println(ml.get(i).get_content());
                 Date date = new Date(ml.get(i).get_timestamp());
                 SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
                 String dateStr = df2.format(date);

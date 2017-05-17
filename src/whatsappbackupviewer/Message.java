@@ -18,9 +18,11 @@ public abstract class Message {
     private int timezone_offset = -1;
     protected String actor;
     protected long timestamp;
+    protected String content;
     
     public String get_actor() { return this.actor; }
     public long get_timestamp() { return this.timestamp; }
+    public String get_content() { return this.content; }
     
     /**
      * Convert a timestamp from string form to milliseconds since Epoch

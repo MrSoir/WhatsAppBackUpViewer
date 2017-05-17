@@ -14,18 +14,15 @@ import java.util.regex.Pattern;
  */
 public class AttachmentMessage extends Message {
     public static final Pattern PATTERN = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{2}, \\d{1,2}:\\d{2}:\\d{2} (?:AM|PM)): (.+): (.+) (?:<‎attached>$)");
-    private String path;
     
     public AttachmentMessage(String line) throws Exception {
         Matcher matcher = this.PATTERN.matcher(line);   
         if (matcher.find()) {
             this.timestamp = parse_date(matcher.group(1));
             this.actor = matcher.group(2);
-            this.path = matcher.group(3);
+            this.content = matcher.group(3);
         } else {
             throw new Exception("Failed to parse attachmentmessage");
         }
     }
-    
-    public String get_path() { return this.path; }
 }
